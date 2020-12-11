@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     //ArrayList to hold the list of notes created by the user
     //static is used so that we access the ArrayList notes from the NoteEditorActivity
     static ArrayList<String> notes = new ArrayList<>();
+    //Array list to store the title of the notes
+    static ArrayList<String> title = new ArrayList<>();
 
     static ArrayAdapter arrayAdapter;
 
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         //checking if we are getting anything out of the shared Preferences by using a hashSet
         HashSet<String> OutPutFromSharedPreferences =(HashSet<String>) sharedPreferences.getStringSet("notes",null);
+        HashSet<String> titleOutputFromSharedPreferences=(HashSet<String>) sharedPreferences.getStringSet("title", null);
 
         if(OutPutFromSharedPreferences == null)
         {
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
             //then that means there is no data stored inside the SharedPreferences
             //if that's the case then we should add an example note
             //adding an example note to our ArrayList notes
+            title.add("Title of your note");
             notes.add("Example note");
 
         }
@@ -63,11 +67,13 @@ public class MainActivity extends AppCompatActivity {
             //if the OutPutFromSharedPreferences != null then that means there are some data stored inside the SharedPreferences
             //in that case we want to take this OutPutFromSharedPreferences Hashset and add it to the notes array
             //the code below will create a new notes array list that will hold the information that is stored inside the OutPutFromSharedPreferences HashSet
+            title = new ArrayList<>(titleOutputFromSharedPreferences);
             notes = new ArrayList(OutPutFromSharedPreferences);
         }
 
         //setting up our ArrayAdapter that we will use to display our notes array
-        arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,notes);
+        //our listView will save the title of the notes
+        arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,title);
         listView.setAdapter(arrayAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -93,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                                 //here we will write the code to delete a note from the applications listView and from the memory
                                 //deleting the note from the notes Arraylist
                                 notes.remove(position);
+                                title.remove(position);
                                 //updating the ArrayAdapter
                                 arrayAdapter.notifyDataSetChanged();
 
@@ -101,8 +108,10 @@ public class MainActivity extends AppCompatActivity {
                                 //here we will use sets and not serializer because we don't want the notes to be in particular order because there is no way to change the order of things
                                 //converting this Arraylist notes into a hashset
                                 HashSet<String> hashSet = new HashSet<>(MainActivity.notes);
+                                HashSet<String> hashSettitle = new HashSet<>(MainActivity.title);
                                 //hashset is something that can be stored in the SharedPreferences
                                 sharedPreferences.edit().putStringSet("notes",hashSet).apply();
+                                sharedPreferences.edit().putStringSet("title",hashSettitle).apply();
                             }
                         }).setNegativeButton("No",null).show();
 
