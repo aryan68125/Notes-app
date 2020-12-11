@@ -157,8 +157,8 @@ public class NoteEditorActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.SpeakNote){
            if(everythingIsOKmttsIsGoodToGo==1){
                String text = editText.getText().toString();
-               mtts.setPitch(SpeechEngineSettings.pitch); //setting up the pitch and speed of the speech in text to speech engine
-               mtts.setSpeechRate(SpeechEngineSettings.speed);
+               mtts.setPitch(1.1f); //setting up the pitch and speed of the speech in text to speech engine
+               mtts.setSpeechRate(0.85f);
                //making text to speech engine to speek our entered text
                //TextToSpeech.QUEUE_FLUSH = current txt is cancled to speak a new one
                //TextToSpeech.QUEUE_ADD the next text is spoken after the previous text is finished
@@ -167,12 +167,7 @@ public class NoteEditorActivity extends AppCompatActivity {
            }
             return true;
         }
-        else if(item.getItemId() == R.id.Settings){
-            Intent intent = new Intent(getApplicationContext(),SpeechEngineSettings.class);
-            startActivity(intent);
-            return true;
-        }
-        return false;
+       return  false;
     }
 
     @Override
