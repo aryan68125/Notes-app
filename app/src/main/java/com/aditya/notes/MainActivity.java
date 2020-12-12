@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
     //ArrayList to hold the list of notes created by the user
     //static is used so that we access the ArrayList notes from the NoteEditorActivity
     static ArrayList<String> notes = new ArrayList<>();
-    ArrayList<String> titles = new ArrayList<>();
 
     static ArrayAdapter arrayAdapter;
 
@@ -67,21 +66,10 @@ public class MainActivity extends AppCompatActivity {
             notes = new ArrayList(OutPutFromSharedPreferences);
         }
 
-        for(int i=0;i<notes.size();i++){
-            String firstLine = notes.get(i);
-            if(firstLine.contains("\n")) //splitting the text when it finds the sentence has moved to another line
-            {
-                firstLine= firstLine.substring(0, firstLine.indexOf("\n"));
-                titles.add(firstLine);
-                Log.i("titles",titles.get(i));
-            }
-        }
-
         //setting up our ArrayAdapter that we will use to display our notes array
         //our listView will save the title of the notes
-        arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,titles);
+        arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,notes);
         listView.setAdapter(arrayAdapter);
-        MainActivity.arrayAdapter.notifyDataSetChanged();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -152,4 +140,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
+
 }
